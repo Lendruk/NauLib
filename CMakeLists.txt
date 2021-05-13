@@ -32,6 +32,8 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/dependencies/bgfx/makefile")
     message(FATAL_ERROR "The bgfx submodule was not downloaded: GIT SUBMODULE was turned off or failed. Please update submodules and try again")
 endif()
 
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glfw)
+
 if(WIN32)
     #include dirs
     target_include_directories(NauLib 
@@ -43,12 +45,13 @@ if(WIN32)
             dependencies/glfw/include
     )
     # add_library(glfw INTERFACE "${PROJECT_SOURCE_DIR}/dependencies/glfw/include/GLFW/glfw3.h")
-    # target_link_libraries(NauLib ${CMAKE_DL_LIBS} glfw pthread)
+    target_link_libraries(NauLib ${CMAKE_DL_LIBS} glfw pthread bgfxDebug bimgDebug bxDebug)
 
 
     #BGFX LINKS LOGIC
-    target_link_directories(NauLib PRIVATE ./dependencies/bgfx/.build/win64_vs2017/bin/)
+    target_link_directories(NauLib PRIVATE dependencies/bgfx/.build/win64_vs2017/bin/)
 
+	target_link_directories(NauLib PRIVATE C:/src/vcpkg/vcpkg/installed/x64-windows/lib/)
 
     if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
         if(NOT EXISTS "${PROJECT_SOURCE_DIR}/dependencies/bgfx/.build/win64_vs2017/bin/libbgfxDebug.a")
