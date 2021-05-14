@@ -45,7 +45,7 @@ if(WIN32)
             dependencies/glfw/include
     )
     # add_library(glfw INTERFACE "${PROJECT_SOURCE_DIR}/dependencies/glfw/include/GLFW/glfw3.h")
-    target_link_libraries(NauLib ${CMAKE_DL_LIBS} glfw pthread bgfxDebug bimgDebug bxDebug)
+    target_link_libraries(NauLib ${CMAKE_DL_LIBS} glfw bgfxDebug bimgDebug bxDebug)
 
 
     #BGFX LINKS LOGIC
