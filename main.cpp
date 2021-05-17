@@ -3,6 +3,8 @@
 #include <bgfx/bgfx.h>
 #include <bgfx/platform.h>
 #include <GLFW/glfw3.h>
+#include "libplatform/libplatform.h"
+#include "v8.h"
 
 #if BX_PLATFORM_LINUX
 #define GLFW_EXPOSE_NATIVE_X11
@@ -33,8 +35,16 @@ static const uint8_t s_logo[4000] = {
 
 int main(int argc, char **argv)
 {
+	// Initialize V8.
+	v8::V8::InitializeICUDefaultLocation(argv[0]);
+	v8::V8::InitializeExternalStartupData(argv[0]);
+	std::unique_ptr<v8::Platform> platform = v8::platform::NewDefaultPlatform();
+	v8::V8::InitializePlatform(platform.get());
+	v8::V8::Initialize();
+
 	// Create a GLFW window without an OpenGL context.
 	glfwSetErrorCallback(glfw_errorCallback);
+	
 	if (!glfwInit())
 		return 1;
 	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);

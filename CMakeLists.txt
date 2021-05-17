@@ -43,15 +43,21 @@ if(WIN32)
             dependencies/bx/include/compat/msvc
             dependencies/bimg/include
             dependencies/glfw/include
+            dependencies/v8/v8/include
     )
     # add_library(glfw INTERFACE "${PROJECT_SOURCE_DIR}/dependencies/glfw/include/GLFW/glfw3.h")
-    target_link_libraries(NauLib ${CMAKE_DL_LIBS} glfw bgfxDebug bimgDebug bxDebug)
+    target_link_libraries(NauLib ${CMAKE_DL_LIBS} glfw bgfxDebug bimgDebug bxDebug d8)
 
 
     #BGFX LINKS LOGIC
     target_link_directories(NauLib PRIVATE dependencies/bgfx/.build/win64_vs2017/bin/)
 
 	target_link_directories(NauLib PRIVATE C:/src/vcpkg/vcpkg/installed/x64-windows/lib/)
+
+    target_link_directories(NauLib PRIVATE dependencies/v8/v8/out/x64.release/)
+
+    target_link_directories(NauLib PRIVATE dependencies/v8/v8/out/x64.release/obj/)
+
 
     if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
         if(NOT EXISTS "${PROJECT_SOURCE_DIR}/dependencies/bgfx/.build/win64_vs2017/bin/libbgfxDebug.a")
@@ -64,6 +70,10 @@ if(WIN32)
             example-glueDebug
             example-commonDebug
             bimg_decodeDebug
+            icuuc
+            icui18n
+            rt
+            dl
 	    )
     elseif("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
         if(NOT EXISTS "${PROJECT_SOURCE_DIR}/dependencies/bgfx/.build/win64_vs2017/bin/bgfx-shared-libRelease.lib")

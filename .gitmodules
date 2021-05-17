@@ -10,3 +10,6 @@
 [submodule "dependencies/glfw"]
 	path = dependencies/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "dependencies/v8/v8"]
+	path = dependencies/v8/v8
+	url = https://chromium.googlesource.com/v8/v8.git
