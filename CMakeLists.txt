@@ -32,7 +32,7 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/dependencies/bgfx/makefile")
     message(FATAL_ERROR "The bgfx submodule was not downloaded: GIT SUBMODULE was turned off or failed. Please update submodules and try again")
 endif()
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glfw)
+	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glfw)
 
 if(WIN32)
     #include dirs
@@ -44,20 +44,28 @@ if(WIN32)
             dependencies/bimg/include
             dependencies/glfw/include
             dependencies/v8/v8/include
+            dependencies/v8/v8/include/libplatform
     )
     # add_library(glfw INTERFACE "${PROJECT_SOURCE_DIR}/dependencies/glfw/include/GLFW/glfw3.h")
-    target_link_libraries(NauLib ${CMAKE_DL_LIBS} glfw bgfxDebug bimgDebug bxDebug d8)
+    target_link_libraries(NauLib ${CMAKE_DL_LIBS} glfw bgfxDebug bimgDebug bxDebug v8_monolith dbghelp Winmm )
 
-
+	
     #BGFX LINKS LOGIC
     target_link_directories(NauLib PRIVATE dependencies/bgfx/.build/win64_vs2017/bin/)
 
-	target_link_directories(NauLib PRIVATE C:/src/vcpkg/vcpkg/installed/x64-windows/lib/)
+    target_link_directories(NauLib PRIVATE C:/src/vcpkg/vcpkg/installed/x64-windows/lib/) #pthreads
 
-    target_link_directories(NauLib PRIVATE dependencies/v8/v8/out/x64.release/)
+    target_link_directories(NauLib PRIVATE dependencies/v8/v8/out/x64.debug/)
+    target_link_directories(NauLib PRIVATE dependencies/v8/v8/out.gn/x64.debug/obj/)
+    target_link_directories(NauLib PRIVATE dependencies/v8/v8/lib/)
 
-    target_link_directories(NauLib PRIVATE dependencies/v8/v8/out/x64.release/obj/)
 
+    add_compile_definitions(V8_COMPRESS_POINTERS)
+	if(MSVC)
+		target_link_options(NauLib PUBLIC /NODEFAULTLIB:libcmtd.lib )
+		target_compile_options(NauLib PUBLIC /MTd)
+		target_compile_options(NauLib PUBLIC /D_ITERATOR_DEBUG_LEVEL=0)
+	endif()
 
     if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
         if(NOT EXISTS "${PROJECT_SOURCE_DIR}/dependencies/bgfx/.build/win64_vs2017/bin/libbgfxDebug.a")
@@ -70,10 +78,7 @@ if(WIN32)
             example-glueDebug
             example-commonDebug
             bimg_decodeDebug
-            icuuc
-            icui18n
-            rt
-            dl
+			
 	    )
     elseif("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
         if(NOT EXISTS "${PROJECT_SOURCE_DIR}/dependencies/bgfx/.build/win64_vs2017/bin/bgfx-shared-libRelease.lib")
