@@ -9,7 +9,7 @@ Git clone the library
 Git clone https://github.com/Lendruk/NauLib
 ```
 
-###Update submodules with
+### Update submodules with
 
 ```
 git submodule init
@@ -17,7 +17,7 @@ git submodule init
 git submodule update
 ```
 
-###Compile bgfx according to their instructions
+### Compile bgfx according to their instructions
 
 It should look something like
 
@@ -32,10 +32,11 @@ make vs2017-debug64
 TODO: bgfx needs to be changed from _ITERATOR_DEBUG_LEVEL=2 to _ITERATOR_DEBUG_LEVEL=0 possible fix: simply compile release instead of debug
 
 
-###Compile v8
+### Compile v8
 
 In case of doubts checkout: https://stackoverflow.com/questions/67041878/how-do-i-embed-v8-on-windows 
 
+```
 cd dependencies/v8
 
 gclient sync
@@ -67,7 +68,7 @@ Finally to compile:
 ninja -C out.gn/x64.debug v8_monolith
 ```
 
-###Finnally build with 
+### Finnally build with 
 
 ```
 mkdir build
