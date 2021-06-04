@@ -26,7 +26,7 @@ cd dependencies/bgfx
 
 make
 
-make vs2017-debug64 
+make vs2017-debug64
 ```
 
 TODO: bgfx needs to be changed from _ITERATOR_DEBUG_LEVEL=2 to _ITERATOR_DEBUG_LEVEL=0 possible fix: simply compile release instead of debug

@@ -1,3 +1,4 @@
 /build
 /dependencies/v8/.cipd
 /dependencies/v8/.gclient_entries
+/.vscode

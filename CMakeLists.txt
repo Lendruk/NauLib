@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1.0)
+cmake_minimum_required(VERSION 3.13.0)
 project(NauLib VERSION 0.0.1)
 add_executable(NauLib main.cpp)
 
@@ -33,6 +33,7 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/dependencies/bgfx/makefile")
 endif()
 
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glfw)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 if(WIN32)
     #include dirs
