@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.13.0)
 project(NauLib VERSION 0.0.1)
 add_executable(NauLib main.cpp)
 
+
+#include js and other data files
+include(CMakeRC.cmake)
+cmrc_add_resource_library(js_scripts NAMESPACE "js" ${CMAKE_CURRENT_SOURCE_DIR}/test.js)
+	
 # Download all the submodules
 find_package(Git QUIET)
 if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
@@ -48,8 +53,7 @@ if(WIN32)
             dependencies/v8/v8/include/libplatform
     )
     # add_library(glfw INTERFACE "${PROJECT_SOURCE_DIR}/dependencies/glfw/include/GLFW/glfw3.h")
-    target_link_libraries(NauLib ${CMAKE_DL_LIBS} glfw bgfxDebug bimgDebug bxDebug v8_monolith dbghelp Winmm )
-
+    target_link_libraries(NauLib ${CMAKE_DL_LIBS} glfw bgfxDebug bimgDebug bxDebug v8_monolith dbghelp Winmm js_scripts)
 	
     #BGFX LINKS LOGIC
     target_link_directories(NauLib PRIVATE dependencies/bgfx/.build/win64_vs2017/bin/)

@@ -17,6 +17,7 @@
 
 #include <GLFW/glfw3native.h>
 
+
 static bool s_showStats = false;
 
 static void glfw_errorCallback(int error, const char *description)
@@ -37,6 +38,7 @@ static const uint8_t s_logo[4000] = {
 int main(int argc, char **argv)
 {
 	NauLib::V8Manager v8Watchdog (argv);
+
 
 	// Create a GLFW window without an OpenGL context.
 	glfwSetErrorCallback(glfw_errorCallback);

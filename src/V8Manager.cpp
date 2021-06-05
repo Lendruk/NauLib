@@ -9,6 +9,10 @@
 #include <string.h>
 #include "util/FileService.h"
 
+#include <cmrc/cmrc.hpp>
+
+CMRC_DECLARE(js);
+
 namespace NauLib {
   V8Manager::V8Manager(char **argv) {
     this->logger = new Logger();
@@ -38,8 +42,12 @@ namespace NauLib {
         v8::Context::Scope context_scope(context);
 
         // Create a string containing the JavaScript source code.
+
+        auto fs = cmrc::js::get_filesystem();
+        auto data = fs.open("test.js");
         
-        string test = FileService::readFile("test.js");
+        string test = std::string(data.begin(), data.end());
+
         cout << test << "\n";
         cout << "prints file" << "\n";
         char* testArr = new char[test.length()+1];
@@ -86,45 +94,45 @@ namespace NauLib {
   }
 
   void V8Manager::reportException(v8::TryCatch* try_catch) {
-  v8::HandleScope handle_scope(this->v8Isolate);
-  v8::String::Utf8Value exception(this->v8Isolate, try_catch->Exception());
-  const char* exception_string = ToCString(exception);
-  v8::Local<v8::Message> message = try_catch->Message();
-  if (message.IsEmpty()) {
-    // V8 didn't provide any extra information about this error; just
-    // print the exception.
-    fprintf(stderr, "%s\n", exception_string);
-  } else {
-    // Print (filename):(line number): (message).
-    v8::String::Utf8Value filename(this->v8Isolate,
-                                   message->GetScriptOrigin().ResourceName());
-    v8::Local<v8::Context> context(this->v8Isolate->GetCurrentContext());
-    const char* filename_string = ToCString(filename);
-    int linenum = message->GetLineNumber(context).FromJust();
-    fprintf(stderr, "%s:%i: %s\n", filename_string, linenum, exception_string);
-    // Print line of source code.
-    v8::String::Utf8Value sourceline(
-        this->v8Isolate, message->GetSourceLine(context).ToLocalChecked());
-    const char* sourceline_string = ToCString(sourceline);
-    fprintf(stderr, "%s\n", sourceline_string);
-    // Print wavy underline (GetUnderline is deprecated).
-    int start = message->GetStartColumn(context).FromJust();
-    for (int i = 0; i < start; i++) {
-      fprintf(stderr, " ");
-    }
-    int end = message->GetEndColumn(context).FromJust();
-    for (int i = start; i < end; i++) {
-      fprintf(stderr, "^");
-    }
-    fprintf(stderr, "\n");
-    v8::Local<v8::Value> stack_trace_string;
-    if (try_catch->StackTrace(context).ToLocal(&stack_trace_string) &&
-        stack_trace_string->IsString() &&
-        stack_trace_string.As<v8::String>()->Length() > 0) {
-      v8::String::Utf8Value stack_trace(this->v8Isolate, stack_trace_string);
-      const char* stack_trace_string = ToCString(stack_trace);
-      fprintf(stderr, "%s\n", stack_trace_string);
-  }
+      v8::HandleScope handle_scope(this->v8Isolate);
+      v8::String::Utf8Value exception(this->v8Isolate, try_catch->Exception());
+      const char* exception_string = ToCString(exception);
+      v8::Local<v8::Message> message = try_catch->Message();
+      if (message.IsEmpty()) {
+        // V8 didn't provide any extra information about this error; just
+        // print the exception.
+        fprintf(stderr, "%s\n", exception_string);
+      } else {
+        // Print (filename):(line number): (message).
+        v8::String::Utf8Value filename(this->v8Isolate,
+                                       message->GetScriptOrigin().ResourceName());
+        v8::Local<v8::Context> context(this->v8Isolate->GetCurrentContext());
+        const char* filename_string = ToCString(filename);
+        int linenum = message->GetLineNumber(context).FromJust();
+        fprintf(stderr, "%s:%i: %s\n", filename_string, linenum, exception_string);
+        // Print line of source code.
+        v8::String::Utf8Value sourceline(
+            this->v8Isolate, message->GetSourceLine(context).ToLocalChecked());
+        const char* sourceline_string = ToCString(sourceline);
+        fprintf(stderr, "%s\n", sourceline_string);
+        // Print wavy underline (GetUnderline is deprecated).
+        int start = message->GetStartColumn(context).FromJust();
+        for (int i = 0; i < start; i++) {
+          fprintf(stderr, " ");
+        }
+        int end = message->GetEndColumn(context).FromJust();
+        for (int i = start; i < end; i++) {
+          fprintf(stderr, "^");
+        }
+        fprintf(stderr, "\n");
+        v8::Local<v8::Value> stack_trace_string;
+        if (try_catch->StackTrace(context).ToLocal(&stack_trace_string) &&
+            stack_trace_string->IsString() &&
+            stack_trace_string.As<v8::String>()->Length() > 0) {
+          v8::String::Utf8Value stack_trace(this->v8Isolate, stack_trace_string);
+          const char* stack_trace_string = ToCString(stack_trace);
+          fprintf(stderr, "%s\n", stack_trace_string);
+      }
     }
   }
 

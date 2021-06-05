@@ -9,6 +9,7 @@
 using namespace std;
 #include <fstream>
 
+
 namespace NauLib {
   string FileService::getCurrentWorkingDirectory() {
     char buffer[FILENAME_MAX];
