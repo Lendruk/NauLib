@@ -43,7 +43,7 @@ namespace NauLib {
         // Create a string containing the JavaScript source code.
 
         auto fs = cmrc::js::get_filesystem();
-        auto data = fs.open("main.js");
+        auto data = fs.open("scripts/main.ts");
         // string test = std::string(data.begin(), data.end());
         string test = "2+2";
 

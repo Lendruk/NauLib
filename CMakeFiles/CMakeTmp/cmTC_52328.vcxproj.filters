@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Program Files\CMake\share\cmake-3.20\Modules\CheckForPthreads.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{C824D714-3063-3B49-81B8-CE51D11E1CAA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
