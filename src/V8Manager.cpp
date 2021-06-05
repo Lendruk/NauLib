@@ -15,7 +15,6 @@ CMRC_DECLARE(js);
 
 namespace NauLib {
   V8Manager::V8Manager(char **argv) {
-    this->logger = new Logger();
     // Initialize V8.
     v8::V8::InitializeICUDefaultLocation(argv[0]);
     v8::V8::InitializeExternalStartupData(argv[0]);
@@ -44,9 +43,9 @@ namespace NauLib {
         // Create a string containing the JavaScript source code.
 
         auto fs = cmrc::js::get_filesystem();
-        auto data = fs.open("test.js");
-        
-        string test = std::string(data.begin(), data.end());
+        auto data = fs.open("main.js");
+        // string test = std::string(data.begin(), data.end());
+        string test = "2+2";
 
         cout << test << "\n";
         cout << "prints file" << "\n";
@@ -72,7 +71,7 @@ namespace NauLib {
 
           // Convert the result to an UTF8 string and print it.
           v8::String::Utf8Value utf8(v8Isolate, result);
-          printf("result -> %s\n", *utf8);  
+          Logger::info(*utf8);
         }
 
         delete create_params.array_buffer_allocator;

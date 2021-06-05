@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "System",
+        "sourceMap": false,
+        "outFile": "main.js"
+      }
+}

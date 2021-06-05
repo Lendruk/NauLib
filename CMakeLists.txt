@@ -5,7 +5,7 @@ add_executable(NauLib main.cpp)
 
 #include js and other data files
 include(CMakeRC.cmake)
-cmrc_add_resource_library(js_scripts NAMESPACE "js" ${CMAKE_CURRENT_SOURCE_DIR}/test.js)
+cmrc_add_resource_library(js_scripts NAMESPACE "js" ${CMAKE_CURRENT_SOURCE_DIR}/scripts/main.js)
 	
 # Download all the submodules
 find_package(Git QUIET)
