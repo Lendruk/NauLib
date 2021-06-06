@@ -1,11 +1,34 @@
 cmake_minimum_required(VERSION 3.13.0)
 project(NauLib VERSION 0.0.1)
 add_executable(NauLib main.cpp)
-
-
-#include js and other data files
 include(CMakeRC.cmake)
-cmrc_add_resource_library(js_scripts NAMESPACE "js" ${CMAKE_CURRENT_SOURCE_DIR}/scripts/main.ts)
+
+#compile existing typescript into a single javascript file
+if(WIN32) 
+    set(COMPILATION_SCRIPT "compileTs.ps1")
+    add_custom_target(
+        typescriptCompilation
+        COMMAND powershell -ExecutionPolicy Bypass -File ${CMAKE_CURRENT_SOURCE_DIR}/scripts/${COMPILATION_SCRIPT} ${CMAKE_CURRENT_BINARY_DIR}/config.h
+    )
+    add_dependencies(NauLib typescriptCompilation)
+    
+    execute_process(COMMAND powershell -ExecutionPolicy Bypass -File ${CMAKE_CURRENT_SOURCE_DIR}/scripts/${COMPILATION_SCRIPT}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ OUTPUT_QUIET)
+    else()
+    set(COMPILATION_SCRIPT "compileTs.sh")
+    add_custom_target(
+        typescriptCompilation
+        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/scripts/${COMPILATION_SCRIPT} ${CMAKE_CURRENT_BINARY_DIR}/config.h
+        )
+        add_dependencies(NauLib typescriptCompilation)
+        
+        execute_process(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/scripts/${COMPILATION_SCRIPT}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ )
+    endif()
+        
+    #include js and other data files
+    cmrc_add_resource_library(js_scripts NAMESPACE "js" ${CMAKE_CURRENT_SOURCE_DIR}/typescript/main.js)
+    add_dependencies(js_scripts typescriptCompilation)
 
 # Download all the submodules
 find_package(Git QUIET)

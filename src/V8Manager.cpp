@@ -43,9 +43,8 @@ namespace NauLib {
         // Create a string containing the JavaScript source code.
 
         auto fs = cmrc::js::get_filesystem();
-        auto data = fs.open("scripts/main.ts");
-        // string test = std::string(data.begin(), data.end());
-        string test = "2+2";
+        auto data = fs.open("typescript/main.js");
+        string test = std::string(data.begin(), data.end());
 
         cout << test << "\n";
         cout << "prints file" << "\n";
@@ -54,7 +53,6 @@ namespace NauLib {
         test.copy(testArr, test.size() + 1);
         v8::MaybeLocal<v8::String> maybeSource = v8::String::NewFromUtf8(
         v8Isolate, testArr, v8::NewStringType::kNormal, static_cast<int>(test.length()));
-            // v8::String::NewFromUtf8Literal(v8Isolate, "'Hello' + ', World!'");
         v8::Local<v8::String> source;
         maybeSource.ToLocal(&source);
         v8::Local<v8::Value> name;
