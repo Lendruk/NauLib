@@ -11,14 +11,14 @@ using namespace std;
 
 
 namespace NauLib {
-  string FileService::getCurrentWorkingDirectory() {
+  string getCurrentWorkingDirectory() {
     char buffer[FILENAME_MAX];
     GetCurrentDir(buffer, FILENAME_MAX);
     string currentWorkingDirectory(buffer);
     return currentWorkingDirectory;
   }
 
-  string FileService::readFile(string fileName) {
+  string readFile(string fileName) {
     ifstream file;
     file.open(fileName);
     if(file.is_open()) {

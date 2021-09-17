@@ -4,10 +4,10 @@
 #include "V8Manager.h"
 #include <assert.h>
 #include <fcntl.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "util/FileService.h"
+#include "GlobalMapper.h"
 
 #include <cmrc/cmrc.hpp>
 
@@ -34,25 +34,25 @@ namespace NauLib {
         // Create a stack-allocated handle scope.
         v8::HandleScope handle_scope(v8Isolate);
 
+        v8::Local<v8::ObjectTemplate> global = mapGlobals(v8Isolate);
+
         // Create a new context.
-        v8::Local<v8::Context> context = v8::Context::New(v8Isolate);
+        v8::Local<v8::Context> context = v8::Context::New(v8Isolate, nullptr, global);
 
         // Enter the context for compiling and running the hello world script.
         v8::Context::Scope context_scope(context);
 
         // Create a string containing the JavaScript source code.
-
         auto fs = cmrc::js::get_filesystem();
         auto data = fs.open("typescript/main.js");
-        string test = std::string(data.begin(), data.end());
-
-        cout << test << "\n";
-        cout << "prints file" << "\n";
-        char* testArr = new char[test.length()+1];
-        testArr[test.length()] = '\0';
-        test.copy(testArr, test.size() + 1);
+        string mainJs = std::string(data.begin(), data.end());
+        char* jsString = new char[mainJs.length()+1];
+        jsString[mainJs.length()] = '\0';
+        mainJs.copy(jsString, mainJs.length() + 1);
+        
         v8::MaybeLocal<v8::String> maybeSource = v8::String::NewFromUtf8(
-        v8Isolate, testArr, v8::NewStringType::kNormal, static_cast<int>(test.length()));
+        v8Isolate, jsString, v8::NewStringType::kNormal, static_cast<int>(mainJs.length()));
+        
         v8::Local<v8::String> source;
         maybeSource.ToLocal(&source);
         v8::Local<v8::Value> name;

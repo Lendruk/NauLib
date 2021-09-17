@@ -3,5 +3,5 @@
 /dependencies/v8/.gclient_entries
 /.vscode
 /typescript/node_modules
-/typescript/**.js
-/typescript/**.js.map
+/typescript/**/**.js
+/typescript/**/**.js.map
